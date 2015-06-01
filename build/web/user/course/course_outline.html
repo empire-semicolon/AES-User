@@ -1,0 +1,55 @@
+
+<div class="row">
+	<div class="col-lg-12">
+		<h2 class="page-header">{{ courseOutline.courseTitle }}</h2>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="row">
+	<div class="col-md-10">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<p> {{ courseOutline.courseDescription }}</p>
+				<div class="col-md-2" align="right" ><strong> Instructor </strong></div>
+				<div class="col-md-10">{{ courseOutline.trainer}}</div>
+			</div>
+		</div>
+		<!-- <div class="panel panel-default" ng-repeat="chapter in chapters">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>Chapter {{chapter.chapterNumber}}: {{chapter.chapterTitle}}</strong></h3>
+			</div>
+			<div class="panel-body">
+				<div class="list-group">
+					<a ng-repeat="pres in chapter.presentations" href=""></a>
+					<a href="../uploads/test.png" class="list-group-item" download>
+						<span class="glyphicon glyphicon-paperclip"></span>&nbsp; {{pres.fileName}}
+					</a>
+				</div>
+			</div>
+		</div> -->
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>Chapter 1: Introduction to J2EE</strong></h3>
+			</div>
+			<div class="panel-body">
+				<div class="list-group">
+					<a href="../uploads/test.png" height="225" width="225" download="myimage"></a>
+					<a href="#" class="list-group-item"><span class="glyphicon glyphicon-paperclip"></span>&nbsp; Introduction PDF</a>
+					<a href="#" class="list-group-item"><span class="glyphicon glyphicon-paperclip"></span>&nbsp; Reference PDF</a>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>Chapter 2: Servlets</strong></h3>
+			</div>
+			<div class="panel-body">
+				<div class="list-group">
+					<a href="#" class="list-group-item"><span class="glyphicon glyphicon-paperclip"></span>   Servlets PDF</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /.row -->
