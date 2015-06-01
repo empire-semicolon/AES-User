@@ -1,3 +1,4 @@
-# AES-User-Spring
+# AES-User
 
-User Module in Spring
+This is not yet the final version of our system.
+The User and Admin modules are integrated in this version.
