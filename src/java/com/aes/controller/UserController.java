@@ -197,14 +197,12 @@ public class UserController {
 		}
 
     @RequestMapping(value="/course_outline", method=RequestMethod.GET)
-    public String setupForm7(@ModelAttribute UserDetails loggedUser, Map<String, Object> map
-            ){
-			
-				//Course course = service.getCourseById(Integer.parseInt(courseId));
-        //Course course = e_service.getCourseById(Integer.parseInt(courseId));
-			//map.put("course", course);
-				//map.put("chapter", service.getAllChapterOfCourse(course));
-        return "../../user/course/course_outline.html";
+    public String setupForm7(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
+            @RequestParam String courseId){		
+	Course course = service.getCourseById(Integer.parseInt(courseId));
+	map.put("course", course);
+	map.put("chapter", service.getAllChapterOfCourse(course));
+        return "../../user/course/course_outline";
     }
     
     @RequestMapping(value="/course_exams", method=RequestMethod.GET)

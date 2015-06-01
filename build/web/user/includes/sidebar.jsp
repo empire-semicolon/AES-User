@@ -4,17 +4,18 @@
         <ul class="nav" id="side-menu">
             <li class="">
                 <a href="#"><span class="glyphicon glyphicon-tasks"></span>  My Courses<span class="fa arrow"></span></a>
+                                                                <% int x=0;%>
 								<% if(session.getAttribute("courses") == null) {%>
 										Courses is out
 								<% } %>
 								<c:forEach items="${courses}" var="course">
 									<ul class="nav nav-second-level" >
-                    
+                                                                    
                         <li>
                             <a href="#">${course.getCourseTitle()}<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
                                 <li>
-                                    <a href="course_outline.html">Course Outline</a>
+                                    <a href="course_outline.htm?courseId=${course.getCourseId()}">Course Outline</a>
                                 </li>
                                 <li>
                                     <a href="course_exams.htm?courseId=${course.getCourseId()}">Exams</a>

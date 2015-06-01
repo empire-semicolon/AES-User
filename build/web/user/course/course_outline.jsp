@@ -39,7 +39,7 @@
                                     </div>
                                     <div class="panel-body">
                                         <div class="list-group">
-                                            <c:forEach items="${tempChapter.getChapter()}" var="tempPresentation">
+                                            <c:forEach items="${tempChapter.getPresentations()}" var="tempPresentation">
                                                 <a href="${tempPresentation.getFilePath()}" height="225" width="225"><span class="glyphicon glyphicon-paperclip"></span> ${tempPresentation.getFileName()}</a>
                                             </c:forEach>
                                         </div>
