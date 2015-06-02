@@ -1,5 +1,6 @@
 package com.aes.controller;
 
+import com.aes.model.Chapter;
 import com.aes.model.Course;
 import com.aes.model.Exam;
 import com.aes.model.UserDetails;
@@ -203,11 +204,27 @@ public class UserController {
 
     @RequestMapping(value="/course_outline", method=RequestMethod.GET)
     public String setupForm7(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
-            @RequestParam String courseId){		
-	Course course = service.getCourseById(Integer.parseInt(courseId));
-	map.put("course", course);
-	map.put("chapter", service.getAllChapterOfCourse(course));
-        return "../../user/course/course_outline";
+            HttpServletRequest request, @RequestParam String courseId){
+        HttpSession session = request.getSession();
+        UserDetails user = new UserDetails();
+        user.setUserId((int)session.getAttribute("userID"));
+        if(service.isCourseAssigned(user, Integer.parseInt(courseId))){
+            Course course = service.getCourseById(Integer.parseInt(courseId));
+            Iterable<Chapter> chapters=service.getAllChapterOfCourse(course);
+            List<Integer> chapterIDs = new ArrayList<>();
+            List<Chapter> chapters_final = new ArrayList<>();
+            for(Chapter c: chapters){
+                if(!chapterIDs.contains(c.getChapterId())){
+                    chapters_final.add(c);
+                    chapterIDs.add(c.getChapterId());
+                }
+            }
+            map.put("course", course);
+            map.put("chapter", chapters_final);
+            return "../../user/course/course_outline";
+        }else{
+            return "../../user/home";
+        }
     }
     
     @RequestMapping(value="/course_exams", method=RequestMethod.GET)
