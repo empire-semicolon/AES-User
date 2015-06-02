@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
-		@Autowired
-		private UService service;
+	@Autowired
+	private UService service;
 	
     @RequestMapping(method=RequestMethod.GET)
     public String viewLogin(Map<String, Object> map){
@@ -38,18 +38,18 @@ public class LoginController {
     @RequestMapping(method = RequestMethod.POST)
     public void processLogin(@RequestParam("username") String username, @RequestParam("password") String password,
             Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws IOException {
-						UserDetails user = new UserDetails();
-						user.setUserName(username);
-						user.setPassword(password);
+            UserDetails user = new UserDetails();
+            user.setUserName(username);
+            user.setPassword(password);
         int isUserValid=service.isValid(user);
         if(isUserValid!=0){
             HttpSession session=request.getSession();
-						user.setUserId(isUserValid);
-            user	=	service.getUserDetails(user);
+            user.setUserId(isUserValid);
+            user=service.getUserDetails(user);
             session.setAttribute("user", user);
-						session.setAttribute("userID", user.getUserId());
-						session.setAttribute("courses", service.getAllCoursesAssigned(user));
-						session.setAttribute("userName",user.getUserName());
+            session.setAttribute("userID", user.getUserId());
+            session.setAttribute("courses", service.getAllCoursesAssigned(user));
+            session.setAttribute("userName",user.getUserName());
 						
             if(user.getUserType().getUserTypeId() == 0 || user.getUserType().getUserTypeId() == 1){
                 response.sendRedirect("admin/home.htm");

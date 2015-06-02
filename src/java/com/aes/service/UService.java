@@ -9,7 +9,6 @@ package com.aes.service;
 import com.aes.dao.UDao;
 import com.aes.model.Chapter;
 import com.aes.model.Course;
-import com.aes.model.CoursesAssigned;
 import com.aes.model.Exam;
 import com.aes.model.ExamScores;
 import com.aes.model.Presentation;
@@ -96,6 +95,11 @@ public class UService {
 		@Transactional
 		public Course getCourseById(int courseId){
 			return uDao.getCourseById(courseId);
+		}
+                
+                @Transactional
+		public boolean isCourseAssigned(UserDetails user, int courseId){
+			return uDao.isCourseAssigned(user, courseId);
 		}
 		
     /*@Transactional

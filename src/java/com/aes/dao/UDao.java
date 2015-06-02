@@ -179,6 +179,17 @@ public class UDao {
 			
 			return course;
 		}
+                
+                public boolean isCourseAssigned(UserDetails user, int courseId){
+                    List<Course> courses=getAllCoursesAssigned(user);
+                    for(Course c: courses){
+                        if(c.getCourseId()==courseId)
+                            return true;
+                    }
+                    return false;
+                }
+                
+                
 		
     /*public boolean updateProfile(UserDetails user){
         Session session = dbUtil.getSessionFactory().openSession();

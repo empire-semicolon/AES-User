@@ -20,7 +20,7 @@
 								<div class="col-lg-12">
 									<h2 class="page-header">Home</h2>
 									<div class="well">
-										<h4>Click the "My Courses" navigation to start learning.</h4>
+										<h4>Click the "My Courses" to start learning.</h4>
 										<p></p>
 									</div>
 								</div>

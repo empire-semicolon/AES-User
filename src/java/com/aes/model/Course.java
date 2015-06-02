@@ -85,7 +85,7 @@ public class Course  implements java.io.Serializable {
         this.courseCategory = courseCategory;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="user_details_trainer", nullable=false)
     public UserDetails getUserDetails() {
         return this.userDetails;
