@@ -5,12 +5,17 @@ import com.aes.model.Exam;
 import com.aes.model.UserDetails;
 import com.aes.service.EmpireService;
 import com.aes.service.UService;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -217,5 +222,29 @@ public class UserController {
         map.put("course", e_service.getCourseById(Integer.parseInt(courseId)));
         
         return "../../user/course/course_exams";
+    }
+    
+    @RequestMapping(value="/download", method=RequestMethod.GET)
+    public String handleFileDownload(@RequestParam String file, @RequestParam String name,
+            HttpServletResponse res, HttpServletRequest req) {
+        try {
+            String path = req.getParameter("file");
+            String fileName = req.getParameter("name");
+            File f = new File(path);
+            if (f.exists()) {
+                res.setContentLength(new Long(f.length()).intValue());
+                res.setHeader("Content-Disposition", "attachment; " + fileName);
+                res.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+                OutputStream out = res.getOutputStream();
+                res.setContentType("text/plain; charset=utf-8");
+                FileInputStream fi = new FileInputStream(f);
+                IOUtils.copy(fi, out);
+                out.flush();
+                out.close();                    
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }
