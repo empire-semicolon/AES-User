@@ -18,7 +18,9 @@
                     <!-- _____________________________________________________________________________________________ -->
                     <div class="row">
                         <div class="col-lg-12">
-                            <h2 class="page-header">Exams - ${exam.getCourse().getCourseTitle()}</h2>
+                            <c:if test="${upcomingExam != null}">
+                                <h2 class="page-header">Exams - ${upcomingExam[0].getCourse().getCourseTitle()}</h2>
+                            </c:if>
                         </div>
                         <!-- /.col-lg-12 -->
                     </div>
@@ -32,7 +34,7 @@
                                 <div class="panel-body">
                                     <div class="table-responsive">
                                         <c:if test="${upcomingExam != null}">
-                                        <table class="table table-striped">
+                                        <table id="courseUpcomingExams" class="table table-striped">
                                             <thead>
                                                 <tr>
                                                     <th>Title</th>
@@ -69,7 +71,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <c:if test="${pastExam != null}">
-                                        <table class="table table-striped">
+                                        <table id="coursePastExams" class="table table-striped">
                                             <thead>
                                                 <tr>
                                                     <th>Title</th>

@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="com.aes.model.UserBean"%>
-<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0; height: 50">
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0; height: 50px">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -13,7 +13,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="home.htm">AES</a>
+        <a class="navbar-brand" href="home.htm">
+            <img src="../resources/images/aes_logo_3.png" class="img-responsive" height="40" width="210" style="margin-top:-20px">
+        </a>
     </div>
     <!-- /.navbar-header -->
     <ul class="nav navbar-top-links navbar-right">

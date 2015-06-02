@@ -38,11 +38,11 @@
                                         <h3 class="panel-title"><strong>Chapter <%= ++x %>: ${tempChapter.getChapterTitle()} </strong></h3>
                                     </div>
                                     <div class="panel-body">
+                                        ${tempChapter.getDescription()} <br><br>
                                         <div class="list-group">
-                                            ${tempChapter.getDescription()} <br><br>
-                                            Presentations: <br>
                                             <c:forEach items="${tempChapter.getPresentations()}" var="tempPresentation">
-                                                <a href="download.htm?file=${tempPresentation.getFilePath()}&name=${tempPresentation.getFileName()}"><span class="glyphicon glyphicon-paperclip"></span> ${tempPresentation.getFileName()}</a><br>
+                                                <a href="download.htm?file=${tempPresentation.getFilePath()}&name=${tempPresentation.getFileName()}" class="list-group-item"><span class="glyphicon glyphicon-paperclip"></span> ${tempPresentation.getFileName()}
+                                                </a>
                                             </c:forEach>
                                         </div>
                                     </div>

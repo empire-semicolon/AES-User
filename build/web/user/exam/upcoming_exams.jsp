@@ -29,7 +29,7 @@
 									<div class="panel panel-default">
 										<div class="panel-body">
 											<div class="table-responsive">
-												<table class="table table-striped">
+												<table id="upcomingExams" class="table table-striped">
 													<thead>
 														<tr>
 															<th>Title</th>
