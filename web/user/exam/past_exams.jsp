@@ -28,7 +28,7 @@
 									<div class="panel panel-default">
 										<div class="panel-body">
 											<div class="table-responsive">
-												<table class="table table-striped">
+												<table id="pastExams" class="table table-striped">
 													<thead>
 														<tr>
 															<th>Title</th>
@@ -46,6 +46,7 @@
 																<td>${exam.course.getCourseTitle()}</td>
 																<td>${exam.getExamDue()}</td>
 																<td>${exam.getTimeLimit()}</td>
+																<td></td>
 																<td>
 																	<a href="past_exams.htm?examId=${exam.getExamId()}" class="btn btn-primary">View Exam</a>
 																</td>
