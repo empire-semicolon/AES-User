@@ -11,35 +11,43 @@
 	<div class="col-md-10">
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<% int x = 1; %>
-				<c:forEach items="${examQ}" var="q">
+				<% int x = 0; %>
+                                <c:set var="count" value="0" scope="page" />
+				<c:forEach items="${questions}" var="question">
 					<div class="row">
 						<div class="col-md-4">
-							<strong>Question #<%=x%></strong>
+							<strong>Question #<%=x+1%></strong>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<h6>${q.get(0)}</h6>
+							<h6>${question}</h6>
 						</div>
 					</div>
 					<div class="row">
+                                                <% int y = 0; %>
 						<div class="col-md-12">
-							<% int y = 0; %>
-							<c:forEach items="${q.get(1)}" var="cho">
+                                                        <label>
+                                                            <input type="radio" name="radio1" value="option1">
+                                                            ${answers.get(count)}
+							</label>
+							<c:forEach items="${choices.get(count)}" var="cho">
 								<div class="radio">
 									<label>
 										<input type="radio" name="radio1" value="option1">
-										${cho.get(y)}
+										${cho}
 									</label>
 								</div>
-								<% y++; %>
+                                                                
 							</c:forEach>
+                                                        <% y++; %>
 						</div>
 					</div>
 					<% x++; %>
 				<hr/>
+                                <c:set var="count" value="${count+1}" scope="page"/>
 				</c:forEach>
+                                
 			</div>
 			<div class="row">
 				<div class="col-md-4 pull-right">

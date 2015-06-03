@@ -16,38 +16,39 @@
 					<!-- start of AJAX container -->
 					<div id="content">
 						<!-- _____________________________________________________________________________________________ -->
-							
 							<div class="row">
 								<div class="col-lg-12">
-									<h2 class="page-header">Upcoming Exams</h2>
+									<h2 class="page-header">Ongoing Exams</h2>
 								</div>
 								<!-- /.col-lg-12 -->
 							</div>
 							<!-- /.row -->
 							<div class="row">
-								<div class="col-lg-12">
+								<div class="col-md-12">
 									<div class="panel panel-default">
 										<div class="panel-body">
 											<div class="table-responsive">
-												<table id="upcomingExams" class="table table-striped">
+												<table id="pastExams" class="table table-striped">
 													<thead>
 														<tr>
 															<th>Title</th>
 															<th>Course</th>
 															<th>Due</th>
 															<th>Time Limit</th>
+															<th>Score</th>
 															<th></th>
 														</tr>
 													</thead>
 													<tbody>
-														<c:forEach items="${upcomingExams}" var="exam">
+														<c:forEach items="${ongoingExams}" var="exam">
 															<tr>
 																<td>${exam.getExamTitle()}</td>
 																<td>${exam.course.getCourseTitle()}</td>
 																<td>${exam.getExamDue()}</td>
 																<td>${exam.getTimeLimit()}</td>
+																<td></td>
 																<td>
-                                                                                                                                    <button type="button" class="btn btn-primary" disabled>Take Exam</button>
+																	<a href="takeExam.htm?examId=${exam.getExamId()}" class="btn btn-primary">Take Exam</a>
 																</td>
 															</tr>
 														</c:forEach>
@@ -58,6 +59,7 @@
 									</div>
 								</div>
 							</div>
+
 						<!-- _____________________________________________________________________________________________ -->
 					</div>
 					<!-- end of AJAX container -->
@@ -68,6 +70,5 @@
 		</div>
 		<!-- /#wrapper -->
 		<%@include file="../includes/footer.jsp" %>
-		
 	</body>
 </html>

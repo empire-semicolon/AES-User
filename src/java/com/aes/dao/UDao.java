@@ -85,6 +85,21 @@ public class UDao {
         return course;
     }
     
+    
+    public List<Exam> getOngoingExams(UserDetails user){
+        List<Course> course = getAllCoursesAssigned(user);
+        List<Exam> exams = new ArrayList<>();
+        Date date = new Date();
+        for(Course c : course){
+            for(Exam e : c.getExams()){
+                if((e.getExamStart().before(date))&&(e.getExamDue()).after(date))
+                    exams.add(e);
+            }
+        }
+        
+        return exams;
+    }
+    
     public List<Exam> getPastExams(UserDetails user){
         List<Course> course = getAllCoursesAssigned(user);
         List<Exam> exams = new ArrayList<>();
@@ -105,7 +120,7 @@ public class UDao {
         Date date = new Date();
         for(Course c : course){
             for(Exam e : c.getExams()){
-                if((e.getExamDue()).after(date))
+                if((e.getExamStart()).after(date))
                     exams.add(e);
             }
         }

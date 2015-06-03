@@ -47,9 +47,7 @@
 																<td>${exam.getExamDue()}</td>
 																<td>${exam.getTimeLimit()}</td>
 																<td>
-																	<a href="takeExam.htm?examId=${exam.getExamId()}">
-																		<button type="button" class="btn btn-primary">Take Exam</button>
-																	</a>
+                                                                                                                                    <button type="button" class="btn btn-primary" disabled>Take Exam</button>
 																</td>
 															</tr>
 														</c:forEach>

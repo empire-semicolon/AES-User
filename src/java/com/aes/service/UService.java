@@ -58,6 +58,11 @@ public class UService {
     }
     
     @Transactional
+    public List<Exam> getOngoingExams(UserDetails user){
+        return uDao.getOngoingExams(user);
+    }
+    
+    @Transactional
     public List<Exam> getPastExams(UserDetails user){
         return uDao.getPastExams(user);
     }

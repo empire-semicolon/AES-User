@@ -145,8 +145,20 @@ public class UserController {
         return "../../user/home";
     }
     
-    @RequestMapping(value="/past_exams", method=RequestMethod.GET)
+    @RequestMapping(value="/ongoing_exams", method=RequestMethod.GET)
     public String setupForm5(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
+            HttpServletRequest request){
+        HttpSession session=request.getSession();
+        int userID=(int)session.getAttribute("userID");
+        UserDetails usr = new UserDetails();
+        usr.setUserId(userID);
+        UserDetails user=service.getUserDetails(usr);
+        map.put("ongoingExams", service.getOngoingExams(user));
+        return "../../user/exam/ongoing_exams";
+    }
+    
+    @RequestMapping(value="/past_exams", method=RequestMethod.GET)
+    public String setupForm10(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
             HttpServletRequest request){
         HttpSession session=request.getSession();
         int userID=(int)session.getAttribute("userID");
@@ -170,8 +182,8 @@ public class UserController {
     }
     
     @RequestMapping(value="/takeExam", method=RequestMethod.GET)
-    public String setupForm8(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
-	@RequestParam String examId) throws ParseException{
+    public String setupForm10(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
+	HttpServletRequest request, @RequestParam String examId) throws ParseException{
         Exam exam = new Exam();
         exam.setExamId(Integer.parseInt(examId));
         exam = service.getExam(exam);
@@ -179,26 +191,28 @@ public class UserController {
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(exam.getQuestionDetails());
         JSONObject jsonObject = (JSONObject)obj;
-
-        List json = new ArrayList();
-        for(Iterator iterator = jsonObject.keySet().iterator(); iterator.hasNext();){
-                String key = (String) iterator.next();
-                List n = new ArrayList();
-                JSONObject ob = (JSONObject)jsonObject.get(key);
-                n.add(ob.get("Question"));
-                JSONArray jA = (JSONArray)ob.get("Choices");
-                Iterator cho = jA.iterator();
-                List l = new ArrayList();
-                while(cho.hasNext()){
-                        l.add(cho.next());
-                }
-                n.add(l);
-                json.add(n);
-        }			
-
-        map.put("exam", exam);
-        map.put("examQ", json);
-
+        List<String> questions=new ArrayList<>();
+        List<String> answers=new ArrayList<>();
+        List<ArrayList> choices=new ArrayList<>();
+        
+        for(int x=0;x<10;x++){
+            JSONObject question=(JSONObject)jsonObject.get(""+x);
+            questions.add((String)question.get("Question"));
+            answers.add((String)question.get("Answer"));
+            ArrayList<String> listdata = new ArrayList<String>();
+            JSONArray question_choices=(JSONArray)question.get("Choices");
+            Iterator<String> iterator = question_choices.iterator();
+            while(iterator.hasNext()){
+                listdata.add(iterator.next());
+            }
+            choices.add(listdata);
+        }
+        
+        map.put("exam",exam);
+        map.put("questions", questions);
+        map.put("answers", answers);
+        map.put("choices", choices);
+        
         return "../../user/exam/exam";
     }
 
