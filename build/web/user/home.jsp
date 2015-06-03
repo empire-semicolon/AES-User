@@ -1,3 +1,5 @@
+<%@page import="com.aes.model.Course"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -20,8 +22,15 @@
 								<div class="col-lg-12">
 									<h2 class="page-header">Home</h2>
 									<div class="well">
-										<h5>Click on "My Courses" to start learning.</h5>
-										<p></p>
+                                                                            <%
+                                                                                List<Course> courses=(List<Course>)session.getAttribute("courses");
+                                                                                if(courses.size()==0){ 
+                                                                            %>
+                                                                            <h5>No assigned courses yet. Please contact your development head to start learning.</h5>
+                                                                            <% } else{%>
+                                                                            <h5>Click on "My Courses" to start learning.</h5>
+                                                                            <% } %>
+                                                                            <p></p>
 									</div>
 								</div>
 								<!-- /.col-lg-12 -->

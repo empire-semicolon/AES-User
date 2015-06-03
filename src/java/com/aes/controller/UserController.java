@@ -170,41 +170,41 @@ public class UserController {
     }
     
     @RequestMapping(value="/takeExam", method=RequestMethod.GET)
-		public String setupForm8(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
-						@RequestParam String examId) throws ParseException{
-			Exam exam = new Exam();
-			exam.setExamId(Integer.parseInt(examId));
-			exam = service.getExam(exam);
-			
-			JSONParser parser = new JSONParser();
-			Object obj = parser.parse(exam.getQuestionDetails());
-			JSONObject jsonObject = (JSONObject)obj;
-			
-			List json = new ArrayList();
-			for(Iterator iterator = jsonObject.keySet().iterator(); iterator.hasNext();){
-				String key = (String) iterator.next();
-				List n = new ArrayList();
-				JSONObject ob = (JSONObject)jsonObject.get(key);
-				n.add(ob.get("Question"));
-				JSONArray jA = (JSONArray)ob.get("Choices");
-				Iterator cho = jA.iterator();
-				List l = new ArrayList();
-				while(cho.hasNext()){
-					l.add(cho.next());
-				}
-				n.add(l);
-				json.add(n);
-			}			
-			
-			map.put("exam", exam);
-			map.put("examQ", json);
-			
-			return "../../user/exam/exam";
-		}
+    public String setupForm8(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
+	@RequestParam String examId) throws ParseException{
+        Exam exam = new Exam();
+        exam.setExamId(Integer.parseInt(examId));
+        exam = service.getExam(exam);
+
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(exam.getQuestionDetails());
+        JSONObject jsonObject = (JSONObject)obj;
+
+        List json = new ArrayList();
+        for(Iterator iterator = jsonObject.keySet().iterator(); iterator.hasNext();){
+                String key = (String) iterator.next();
+                List n = new ArrayList();
+                JSONObject ob = (JSONObject)jsonObject.get(key);
+                n.add(ob.get("Question"));
+                JSONArray jA = (JSONArray)ob.get("Choices");
+                Iterator cho = jA.iterator();
+                List l = new ArrayList();
+                while(cho.hasNext()){
+                        l.add(cho.next());
+                }
+                n.add(l);
+                json.add(n);
+        }			
+
+        map.put("exam", exam);
+        map.put("examQ", json);
+
+        return "../../user/exam/exam";
+    }
 
     @RequestMapping(value="/course_outline", method=RequestMethod.GET)
     public String setupForm7(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
-            HttpServletRequest request, @RequestParam String courseId){
+        HttpServletRequest request, @RequestParam String courseId){
         HttpSession session = request.getSession();
         UserDetails user = new UserDetails();
         user.setUserId((int)session.getAttribute("userID"));
@@ -229,22 +229,24 @@ public class UserController {
     
     @RequestMapping(value="/course_exams", method=RequestMethod.GET)
     public String setupForm8(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
-            HttpServletRequest request, @RequestParam String courseId){
+        HttpServletRequest request, @RequestParam String courseId){
         HttpSession session = request.getSession();
         UserDetails user = new UserDetails();
         user.setUserId((int)session.getAttribute("userID"));
-        
-        map.put("pastExam", service.getPastExamsByCourse(user, Integer.parseInt(courseId)));
-        map.put("upcomingExam", service.getUpcomingExamsByCourse(user, Integer.parseInt(courseId)));
-        map.put("course", e_service.getCourseById(Integer.parseInt(courseId)));
-        
-        return "../../user/course/course_exams";
+        if(service.isCourseAssigned(user, Integer.parseInt(courseId))){
+            map.put("pastExam", service.getPastExamsByCourse(user, Integer.parseInt(courseId)));
+            map.put("upcomingExam", service.getUpcomingExamsByCourse(user, Integer.parseInt(courseId)));
+            map.put("course", e_service.getCourseById(Integer.parseInt(courseId)));
+            return "../../user/course/course_exams";
+        }else{
+            return "../../user/home";
+        }
     }
     
     @RequestMapping(value="/download", method=RequestMethod.GET)
     public String handleFileDownload(@RequestParam String file, @RequestParam String name,
-            HttpServletResponse res, HttpServletRequest req) {
-        try {
+        HttpServletResponse res, HttpServletRequest req) {
+        try{
             String path = req.getParameter("file");
             String fileName = req.getParameter("name");
             File f = new File(path);
@@ -259,8 +261,8 @@ public class UserController {
                 out.flush();
                 out.close();                    
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        }catch (Exception e) {
+           System.out.println(e.getMessage());
         }
         return null;
     }

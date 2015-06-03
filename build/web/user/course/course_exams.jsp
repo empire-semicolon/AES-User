@@ -18,9 +18,7 @@
                     <!-- _____________________________________________________________________________________________ -->
                     <div class="row">
                         <div class="col-lg-12">
-                            <c:if test="${upcomingExam != null}">
-                                <h2 class="page-header">Exams - ${upcomingExam[0].getCourse().getCourseTitle()}</h2>
-                            </c:if>
+                                <h2 class="page-header">Exams - ${course.getCourseTitle()}</h2>
                         </div>
                         <!-- /.col-lg-12 -->
                     </div>
