@@ -25,12 +25,7 @@
 						</div>
 					</div>
 					<div class="row">
-                                                <% int y = 0; %>
 						<div class="col-md-12">
-                                                        <label>
-                                                            <input type="radio" name="radio1" value="option1">
-                                                            ${answers.get(count)}
-							</label>
 							<c:forEach items="${choices.get(count)}" var="cho">
 								<div class="radio">
 									<label>
@@ -40,7 +35,6 @@
 								</div>
                                                                 
 							</c:forEach>
-                                                        <% y++; %>
 						</div>
 					</div>
 					<% x++; %>

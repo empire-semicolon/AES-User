@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -202,9 +203,11 @@ public class UserController {
             ArrayList<String> listdata = new ArrayList<String>();
             JSONArray question_choices=(JSONArray)question.get("Choices");
             Iterator<String> iterator = question_choices.iterator();
+            listdata.add((String)question.get("Answer"));
             while(iterator.hasNext()){
                 listdata.add(iterator.next());
             }
+            Collections.shuffle(listdata);
             choices.add(listdata);
         }
         
@@ -248,6 +251,7 @@ public class UserController {
         UserDetails user = new UserDetails();
         user.setUserId((int)session.getAttribute("userID"));
         if(service.isCourseAssigned(user, Integer.parseInt(courseId))){
+            map.put("ongoingExam", service.getOngoingExamsByCourse(user,Integer.parseInt(courseId)));
             map.put("pastExam", service.getPastExamsByCourse(user, Integer.parseInt(courseId)));
             map.put("upcomingExam", service.getUpcomingExamsByCourse(user, Integer.parseInt(courseId)));
             map.put("course", e_service.getCourseById(Integer.parseInt(courseId)));

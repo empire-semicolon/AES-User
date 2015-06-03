@@ -27,6 +27,44 @@
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
+                                    <h3 class="panel-title"><strong>Ongoing Exams</strong></h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <c:if test="${ongoingExam != null}">
+                                        <table id="courseUpcomingExams" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>Course</th>
+                                                    <th>Due</th>
+                                                    <th>Time Limit</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${ongoingExam}" var="temp">
+                                                <tr>
+                                                    <td>${temp.getExamTitle()}</td>
+                                                    <td>${temp.getCourse().getCourseTitle()}</td>
+                                                    <td>${temp.getExamDue()}</td>
+                                                    <td>${temp.getTimeLimit()}</td>
+                                                    <td>
+                                                        <a href="takeExam.htm?examId=${temp.getExamId()}" class="btn btn-primary">Take Exam</a>
+                                                    </td>
+                                                </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </c:if>
+                                    <c:if test="${ongoingExam == null}">
+                                        <p>No ongoing exams.</p>
+                                    </c:if>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
                                     <h3 class="panel-title"><strong>Upcoming Exams</strong></h3>
                                 </div>
                                 <div class="panel-body">
@@ -50,7 +88,7 @@
                                                     <td>${temp.getExamDue()}</td>
                                                     <td>${temp.getTimeLimit()}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-primary">Take Exam</button>
+                                                        <button type="button" class="btn btn-primary" disabled>Take Exam</button>
                                                     </td>
                                                 </tr>
                                                 </c:forEach>
@@ -58,7 +96,7 @@
                                         </table>
                                     </c:if>
                                     <c:if test="${upcomingExam == null}">
-                                        <p>No past exams.</p>
+                                        <p>No upcoming exams.</p>
                                     </c:if>
                                     </div>
                                 </div>

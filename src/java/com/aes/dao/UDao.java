@@ -160,6 +160,18 @@ public class UDao {
             return false;
         }
     }
+    
+    public List<Exam> getOngoingExamsByCourse(UserDetails user, int courseId) {
+        List<Exam> exams = getOngoingExams(user);
+        List<Exam> ongoing = new ArrayList<>();
+        for (Exam e : exams) {
+            if (e.getCourse().getCourseId() == courseId) {
+                ongoing.add(e);
+            }
+        }
+
+        return ongoing;
+    }
 		
 		public List<Exam> getUpcomingExamsByCourse(UserDetails user, int courseId) {
         List<Exam> exams = getUpcomingExam(user);

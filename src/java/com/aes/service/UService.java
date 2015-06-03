@@ -87,6 +87,11 @@ public class UService {
         return uDao.getUserDetails(user);
     }
     
+    @Transactional
+    public List<Exam> getOngoingExamsByCourse(UserDetails user, int courseId){
+        return uDao.getOngoingExamsByCourse(user, courseId);
+    }
+    
 		@Transactional
     public List<Exam> getUpcomingExamsByCourse(UserDetails user, int courseId){
         return uDao.getUpcomingExamsByCourse(user, courseId);
