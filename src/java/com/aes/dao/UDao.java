@@ -26,6 +26,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -87,12 +88,22 @@ public class UDao {
     
     
     public List<Exam> getOngoingExams(UserDetails user){
+        Iterable<ExamScores> user_examscores=getExamScores(user);
         List<Course> course = getAllCoursesAssigned(user);
         List<Exam> exams = new ArrayList<>();
+        List<Integer> examIds=new ArrayList<>();
+        
+        //in order to eliminate taken exam that are still ongoing
+        for(ExamScores es : user_examscores){
+            if(!examIds.contains(es.getExam().getExamId())){
+                examIds.add(es.getExam().getExamId());
+            }
+        }
+        
         Date date = new Date();
         for(Course c : course){
             for(Exam e : c.getExams()){
-                if((e.getExamStart().before(date))&&(e.getExamDue()).after(date))
+                if((e.getExamStart().before(date))&&(e.getExamDue()).after(date)&&!examIds.contains(e.getExamId()))
                     exams.add(e);
             }
         }
@@ -101,17 +112,44 @@ public class UDao {
     }
     
     public List<Exam> getPastExams(UserDetails user){
-        List<Course> course = getAllCoursesAssigned(user);
-        List<Exam> exams = new ArrayList<>();
-        Date date = new Date();
-        for(Course c : course){
-            for(Exam e : c.getExams()){
-                if((e.getExamDue()).before(date))
-                    exams.add(e);
+        Iterable<ExamScores> user_examscores=getExamScores(user);
+        List<Course> user_courses = getAllCoursesAssigned(user);
+        List<Exam> past_exams = new ArrayList<>();
+        List<Integer> examIds=new ArrayList<>();
+        
+        //taken exams
+        for(ExamScores es : user_examscores){
+            if(!examIds.contains(es.getExam().getExamId())){
+                past_exams.add(es.getExam());
+                examIds.add(es.getExam().getExamId());
             }
         }
         
-        return exams;
+        //untaken exams but already past due
+        Date date = new Date();
+        for(Course c : user_courses){
+            for(Exam e : c.getExams()){
+                if((e.getExamDue()).before(date)&&!examIds.contains(e.getExamId()))
+                    past_exams.add(e);
+            }
+        }
+        
+        return past_exams;
+    }
+    
+    public List<Integer> getPastExamsExamScores(UserDetails user){
+        List<Exam> past_exams=getPastExams(user);
+        List<Integer> scores=new ArrayList<>();
+        for(Exam e : past_exams){
+            int score=0;
+            for(ExamScores es : e.getExamScoreses()){
+                if(es.getUserDetails().getUserId()==user.getUserId()){
+                    score=es.getScore();
+                }
+            }
+            scores.add(score);
+        }
+        return scores;
     }
     
     public List<Exam> getUpcomingExam(UserDetails user){
@@ -215,6 +253,7 @@ public class UDao {
                     }
                     return false;
                 }
+                
                 
                 
 		

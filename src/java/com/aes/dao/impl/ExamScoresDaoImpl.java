@@ -60,7 +60,7 @@ public class ExamScoresDaoImpl implements ExamScoresDao {
         int nextNumber = 1;
         try {
              Integer nextInt = ((Integer)session.getCurrentSession().createCriteria(ExamScores.class)
-                .setProjection(Projections.max("examId")).uniqueResult()) + 1; 
+                .setProjection(Projections.max("examScoresId")).uniqueResult()) + 1; 
             if (nextInt == null){
                 return 1;
             }

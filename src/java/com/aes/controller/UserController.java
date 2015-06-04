@@ -10,7 +10,10 @@ import com.aes.service.UService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -54,7 +57,6 @@ public class UserController {
         usr.setUserId(userID);
         UserDetails user=service.getUserDetails(usr);
         map.put("userName",user.getUserName());
-        //map.put("userCourses", user.getCourses());
         return "../../user/home";
     }
     
@@ -168,7 +170,9 @@ public class UserController {
         UserDetails usr = new UserDetails();
         usr.setUserId(userID);
         UserDetails user=service.getUserDetails(usr);
+        map.put("userID", userID);
         map.put("pastExams", service.getPastExams(user));
+        map.put("scores",service.getPastExamsExamScores(user));
         return "../../user/exam/past_exams";
     }
     
@@ -195,13 +199,11 @@ public class UserController {
         Object obj = parser.parse(exam.getQuestionDetails());
         JSONObject jsonObject = (JSONObject)obj;
         List<String> questions=new ArrayList<>();
-        List<String> answers=new ArrayList<>();
         List<ArrayList> choices=new ArrayList<>();
         
         for(int x=0;x<2;x++){
             JSONObject question=(JSONObject)jsonObject.get(""+x);
             questions.add((String)question.get("Question"));
-            answers.add((String)question.get("Answer"));
             ArrayList<String> listdata = new ArrayList<String>();
             JSONArray question_choices=(JSONArray)question.get("Choices");
             Iterator<String> iterator = question_choices.iterator();
@@ -222,7 +224,7 @@ public class UserController {
     
     @RequestMapping(value="/submit_exam", method=RequestMethod.POST)
     public String setupForm11(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
-            HttpServletRequest request, @RequestParam String examId, @RequestParam String answers) throws ParseException{
+            HttpServletRequest request, @RequestParam String examId, @RequestParam String answers) throws ParseException, java.text.ParseException{
         Exam exam = new Exam();
         exam.setExamId(Integer.parseInt(examId));
         exam = service.getExam(exam);
@@ -231,22 +233,52 @@ public class UserController {
         Object obj = parser.parse(exam.getQuestionDetails());
         JSONObject jsonObject = (JSONObject)obj;
         List<String> correct_answers=new ArrayList<>();
+        List<String> questions=new ArrayList<>();
+        List<String> correctOrWrong=new ArrayList<>();
         
         for(int x=0;x<2;x++){
             JSONObject question=(JSONObject)jsonObject.get(""+x);
+            questions.add((String)question.get("Question"));
             correct_answers.add((String)question.get("Answer"));
         }
         
         int exam_score=0;
-        String user_answers[]=answers.split(",");
+        String user_answers_array[]=answers.split(",");
+        List<String> user_answers=new ArrayList<>();
+        user_answers.addAll(Arrays.asList(user_answers_array));
         for(int x=0;x<2;x++){
-            if(correct_answers.get(x).equals(user_answers[x]))
+            if(correct_answers.get(x).equals(user_answers.get(x))){
+                correctOrWrong.add("+1");
                 exam_score++;
+            }else{
+                correctOrWrong.add("");
+            }
         }
 				
         System.out.println("Exam Score: "+exam_score);		
-				
-        return "../../user/home";
+        
+        HttpSession session = request.getSession();
+        UserDetails user = new UserDetails();
+        user.setUserId((int)session.getAttribute("userID"));
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date=new Date();
+        String dateString = dateFormat.format(date);
+        ExamScores e=new ExamScores();
+        e.setExam(exam);
+        e.setDateTaken(dateFormat.parse(dateString));
+        e.setScore(exam_score);
+        e.setMaxScore(10);
+        e.setUserDetails(user);
+        e_service.addExamScore(e);
+        
+        map.put("exam",exam);
+        map.put("questions", questions);
+        map.put("correct_answers", correct_answers);
+        map.put("user_answers",user_answers);
+        map.put("correctOrWrong", correctOrWrong);
+        map.put("exam_score",exam_score);
+        
+        return "../../user/exam/exam_results";
     }
 
     @RequestMapping(value="/course_outline", method=RequestMethod.GET)
