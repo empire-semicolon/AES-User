@@ -1,9 +1,17 @@
 $(document).ready( function () {
+    $('#ongoingExams').dataTable( {
+        paging: true
+    } );
+
     $('#upcomingExams').dataTable( {
         paging: true
     } );
 
     $('#pastExams').dataTable( {
+        paging: true
+    } );
+
+    $('#courseOngoingExams').dataTable( {
         paging: true
     } );
 

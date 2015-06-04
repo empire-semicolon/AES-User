@@ -32,7 +32,7 @@
                                 <div class="panel-body">
                                     <div class="table-responsive">
                                         <c:if test="${ongoingExam != null}">
-                                        <table id="courseUpcomingExams" class="table table-striped">
+                                        <table id="courseOngoingExams" class="table table-striped">
                                             <thead>
                                                 <tr>
                                                     <th>Title</th>

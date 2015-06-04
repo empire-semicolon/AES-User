@@ -28,14 +28,13 @@
 									<div class="panel panel-default">
 										<div class="panel-body">
 											<div class="table-responsive">
-												<table id="pastExams" class="table table-striped">
+												<table id="ongoingExams" class="table table-striped">
 													<thead>
 														<tr>
 															<th>Title</th>
 															<th>Course</th>
 															<th>Due</th>
 															<th>Time Limit</th>
-															<th>Score</th>
 															<th></th>
 														</tr>
 													</thead>
@@ -46,7 +45,6 @@
 																<td>${exam.course.getCourseTitle()}</td>
 																<td>${exam.getExamDue()}</td>
 																<td>${exam.getTimeLimit()}</td>
-																<td></td>
 																<td>
 																	<a href="take_exam.htm?examId=${exam.getExamId()}" class="btn btn-primary">Take Exam</a>
 																</td>
