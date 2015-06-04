@@ -40,18 +40,20 @@
 														</tr>
 													</thead>
 													<tbody>
-														<c:forEach items="${pastExams}" var="exam">
-															<tr>
-																<td>${exam.getExamTitle()}</td>
-																<td>${exam.course.getCourseTitle()}</td>
-																<td>${exam.getExamDue()}</td>
-																<td>${exam.getTimeLimit()}</td>
-																<td></td>
-																<td>
-																	<a href="past_exams.htm?examId=${exam.getExamId()}" class="btn btn-primary">View Exam</a>
-																</td>
-															</tr>
-														</c:forEach>
+                                                                                                            <c:set var="count" value="0" scope="page" />
+                                                                                                            <c:forEach items="${pastExams}" var="exam">
+                                                                                                                <tr>
+                                                                                                                    <td>${exam.getExamTitle()}</td>
+                                                                                                                    <td>${exam.course.getCourseTitle()}</td>
+                                                                                                                    <td>${exam.getExamDue()}</td>
+                                                                                                                    <td>${exam.getTimeLimit()}</td>
+                                                                                                                    <td>${scores.get(count)}/10</td>
+                                                                                                                    <td>
+                                                                                                                            <a href="past_exams.htm?examId=${exam.getExamId()}" class="btn btn-primary">View Exam</a>
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                                <c:set var="count" value="${count+1}" scope="page"/>
+                                                                                                            </c:forEach>
 													</tbody>
 												</table>
 											</div>

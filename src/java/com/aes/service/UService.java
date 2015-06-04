@@ -68,6 +68,11 @@ public class UService {
     }
     
     @Transactional
+    public List<Integer> getPastExamsExamScores(UserDetails user){
+        return uDao.getPastExamsExamScores(user);
+    }
+    
+    @Transactional
     public List<Exam> getUpcomingExams(UserDetails user){
         return uDao.getUpcomingExam(user);
     }
@@ -111,6 +116,7 @@ public class UService {
 		public boolean isCourseAssigned(UserDetails user, int courseId){
 			return uDao.isCourseAssigned(user, courseId);
 		}
+
 		
     /*@Transactional
     public boolean updateProfile(UserDetails user){

@@ -10,6 +10,8 @@ import com.aes.service.UService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -168,7 +170,9 @@ public class UserController {
         UserDetails usr = new UserDetails();
         usr.setUserId(userID);
         UserDetails user=service.getUserDetails(usr);
+        map.put("userID", userID);
         map.put("pastExams", service.getPastExams(user));
+        map.put("scores",service.getPastExamsExamScores(user));
         return "../../user/exam/past_exams";
     }
     
@@ -222,7 +226,7 @@ public class UserController {
     
     @RequestMapping(value="/submit_exam", method=RequestMethod.POST)
     public String setupForm11(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
-            HttpServletRequest request, @RequestParam String examId, @RequestParam String answers) throws ParseException{
+            HttpServletRequest request, @RequestParam String examId, @RequestParam String answers) throws ParseException, java.text.ParseException{
         Exam exam = new Exam();
         exam.setExamId(Integer.parseInt(examId));
         exam = service.getExam(exam);
@@ -243,19 +247,22 @@ public class UserController {
             if(correct_answers.get(x).equals(user_answers[x]))
                 exam_score++;
         }
-        /**
+        
         HttpSession session = request.getSession();
         UserDetails user = new UserDetails();
         user.setUserId((int)session.getAttribute("userID"));
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date=new Date();
+        String dateString = dateFormat.format(date);
+        System.out.println(dateString);
         ExamScores e=new ExamScores();
-        e.setExamScoresId(2);
         e.setExam(exam);
-        e.setDateTaken(new Date());
+        e.setDateTaken(dateFormat.parse(dateString));
         e.setScore(exam_score);
         e.setMaxScore(10);
         e.setUserDetails(user);
         e_service.addExamScore(e);
-        */
+        
         System.out.println("Exam Score: "+exam_score);
         return "../../user/home";
     }
