@@ -25,23 +25,25 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-12">
-							<c:forEach items="${choices.get(count)}" var="cho">
-								<div class="radio">
-									<label>
-										<input type="radio" name="radio1" value="option1">
-										${cho}
-									</label>
-								</div>
-                                                                
-							</c:forEach>
-						</div>
+                                            <div class="col-md-12">
+                                                <form on>
+                                                <c:forEach items="${choices.get(count)}" var="cho">
+                                                        <div class="radio">
+                                                                <label>
+                                                                    <input type="radio" name="radios" value="option1"
+                                                                           onclick="answeredQuestion()">
+                                                                    ${cho}
+                                                                </label>
+                                                        </div>
+
+                                                </c:forEach>
+                                                </form>
+                                            </div>
 					</div>
 					<% x++; %>
 				<hr/>
                                 <c:set var="count" value="${count+1}" scope="page"/>
 				</c:forEach>
-                                
 			</div>
 			<div class="row">
 				<div class="col-md-4 pull-right">
@@ -72,8 +74,30 @@
 				Questions Answered
 			</div>
 			<div class="panel-body">
-				<h6>0/20</h6>
+				<input type="text" id="answered" value="0"/>/10
 			</div>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+    var elem = document.getElementById("answered");
+    var radios=document.getElementsByName("radios");
+    var one=1.0;
+    var amountAnswered=0;
+    
+    //function answeredQuestion(){
+      //  elem.value=one+parseInt(elem.value);
+    //}
+    
+    function answeredQuestion() {
+        amountAnswered=0;
+        for(var j = 0; j < radios.length; j++) {
+            var radio = radios[j];
+            if(radio.checked) {
+                amountAnswered++;
+            }
+        }
+        elem.value=amountAnswered;
+    }
+</script>
