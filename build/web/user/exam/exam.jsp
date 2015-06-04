@@ -11,35 +11,42 @@
 	<div class="col-md-10">
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<% int x = 1; %>
-				<c:forEach items="${examQ}" var="q">
+                            <form action="submit_exam.htm" method="POST">
+				<% int x = 0; %>
+                                <c:set var="count" value="0" scope="page" />
+				<c:forEach items="${questions}" var="question">
 					<div class="row">
 						<div class="col-md-4">
-							<strong>Question #<%=x%></strong>
+                                                    <div class="question">Question #<%=x+1%></div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<h6>${q.get(0)}</h6>
+							<h6>${question}</h6>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-12">
-							<% int y = 0; %>
-							<c:forEach items="${q.get(1)}" var="cho">
-								<div class="radio">
-									<label>
-										<input type="radio" name="radio1" value="option1">
-										${cho.get(y)}
-									</label>
-								</div>
-								<% y++; %>
-							</c:forEach>
-						</div>
+                                            <div class="col-md-12">
+                                                <c:forEach items="${choices.get(count)}" var="choice">
+                                                        <div class="radio">
+                                                                <label>
+                                                                    <input type="radio" name="radio${count}" value="${choice}"
+                                                                           onclick="answeredQuestion()">
+                                                                    ${choice}
+                                                                </label>
+                                                        </div>
+
+                                                </c:forEach>
+                                            </div>
 					</div>
 					<% x++; %>
 				<hr/>
+                                <c:set var="count" value="${count+1}" scope="page"/>
 				</c:forEach>
+                                <input type="hidden" name="examId" value="${exam.getExamId()}"/>
+                                <input type="hidden" id="answers" name="answers" value=""/>
+                                <button class="submit" type="submit">Submit</button>
+                            </form>
 			</div>
 			<div class="row">
 				<div class="col-md-4 pull-right">
@@ -60,7 +67,7 @@
 				Time
 			</div>
 			<div class="panel-body">
-				<h6>56 mins</h6>
+				<h6>${exam.getTimeLimit()} mins</h6>
 			</div>
 		</div>
 	</div>
@@ -70,8 +77,47 @@
 				Questions Answered
 			</div>
 			<div class="panel-body">
-				<h6>0/20</h6>
+				<input type="text" id="answered" value="0"/>/10
 			</div>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+    var elem=document.getElementById("answered");
+    var elem2=document.getElementById("answers");
+    var radios=document.querySelectorAll('input[type=radio]');
+    var amountAnswered=0;
+    
+    function answeredQuestion() {
+        amountAnswered=0;
+        for(var j = 0; j < radios.length; j++) {
+            var radio = radios[j];
+            if(radio.checked) {
+                amountAnswered++;
+            }
+        }
+        elem.value=amountAnswered;
+        handleAnswers();
+    }
+    
+    function handleAnswers(){
+        var answers="";
+        for(var i = 0; i <= 9; i++) {
+            var radios2 = document.getElementsByName("radio"+i);
+            var answer=" ";
+            for(var j = 0; j < radios2.length; j++) {
+                var radio2=radios2[j];
+                if(radio2.checked){
+                    answer=radio2.value;
+                }
+            }
+            answers=answers.concat(answer);
+            if(i!=9){
+                answers=answers.concat(",");
+            }
+        }
+        elem2.value=answers;
+    }
+    
+</script>

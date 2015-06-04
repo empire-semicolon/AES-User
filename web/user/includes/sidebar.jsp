@@ -30,6 +30,9 @@
                 <a href="#"><span class="glyphicon glyphicon-question-sign"></span>  My Exams<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
+                        <a id="ongoing_exams" href="ongoing_exams.htm">Ongoing Exams</a>
+                    </li>
+                    <li>
                         <a id="upcoming_exams" href="upcoming_exams.htm">Upcoming Exams</a>
                         <!-- <a id="upcoming_exams" href="#/upcoming_exams">Upcoming Exams</a> -->
                     </li>
