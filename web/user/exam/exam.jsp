@@ -27,12 +27,12 @@
 					</div>
 					<div class="row">
                                             <div class="col-md-12">
-                                                <c:forEach items="${choices.get(count)}" var="cho">
+                                                <c:forEach items="${choices.get(count)}" var="choice">
                                                         <div class="radio">
                                                                 <label>
-                                                                    <input type="radio" name="radio${count}" value="${cho}"
+                                                                    <input type="radio" name="radio${count}" value="${choice}"
                                                                            onclick="answeredQuestion()">
-                                                                    ${cho}
+                                                                    ${choice}
                                                                 </label>
                                                         </div>
 
@@ -45,7 +45,7 @@
 				</c:forEach>
                                 <input type="hidden" name="examId" value="${exam.getExamId()}"/>
                                 <input type="hidden" id="answers" name="answers" value=""/>
-                                <button class="submit" onclick="return handleAnswers();" type="submit">Submit</button>
+                                <button class="submit" type="submit">Submit</button>
                             </form>
 			</div>
 			<div class="row">
@@ -87,9 +87,7 @@
     var elem=document.getElementById("answered");
     var elem2=document.getElementById("answers");
     var radios=document.querySelectorAll('input[type=radio]');
-    var one=1.0;
     var amountAnswered=0;
-    var amountCorrect = 0; 
     
     function answeredQuestion() {
         amountAnswered=0;

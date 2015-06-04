@@ -3,6 +3,7 @@ package com.aes.controller;
 import com.aes.model.Chapter;
 import com.aes.model.Course;
 import com.aes.model.Exam;
+import com.aes.model.ExamScores;
 import com.aes.model.UserDetails;
 import com.aes.service.EmpireService;
 import com.aes.service.UService;
@@ -11,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -213,7 +215,6 @@ public class UserController {
         
         map.put("exam",exam);
         map.put("questions", questions);
-        //map.put("answers", answers);
         map.put("choices", choices);
         
         return "../../user/exam/exam";
@@ -242,7 +243,7 @@ public class UserController {
             if(correct_answers.get(x).equals(user_answers[x]))
                 exam_score++;
         }
-        
+
         System.out.println("Exam Score: "+exam_score);
         return "../../user/home";
     }
