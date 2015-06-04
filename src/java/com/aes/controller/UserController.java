@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -56,7 +57,6 @@ public class UserController {
         usr.setUserId(userID);
         UserDetails user=service.getUserDetails(usr);
         map.put("userName",user.getUserName());
-        //map.put("userCourses", user.getCourses());
         return "../../user/home";
     }
     
@@ -199,13 +199,11 @@ public class UserController {
         Object obj = parser.parse(exam.getQuestionDetails());
         JSONObject jsonObject = (JSONObject)obj;
         List<String> questions=new ArrayList<>();
-        List<String> answers=new ArrayList<>();
         List<ArrayList> choices=new ArrayList<>();
         
         for(int x=0;x<10;x++){
             JSONObject question=(JSONObject)jsonObject.get(""+x);
             questions.add((String)question.get("Question"));
-            answers.add((String)question.get("Answer"));
             ArrayList<String> listdata = new ArrayList<String>();
             JSONArray question_choices=(JSONArray)question.get("Choices");
             Iterator<String> iterator = question_choices.iterator();
@@ -235,17 +233,26 @@ public class UserController {
         Object obj = parser.parse(exam.getQuestionDetails());
         JSONObject jsonObject = (JSONObject)obj;
         List<String> correct_answers=new ArrayList<>();
+        List<String> questions=new ArrayList<>();
+        List<String> correctOrWrong=new ArrayList<>();
         
         for(int x=0;x<10;x++){
             JSONObject question=(JSONObject)jsonObject.get(""+x);
+            questions.add((String)question.get("Question"));
             correct_answers.add((String)question.get("Answer"));
         }
         
         int exam_score=0;
-        String user_answers[]=answers.split(",");
+        String user_answers_array[]=answers.split(",");
+        List<String> user_answers=new ArrayList<>();
+        user_answers.addAll(Arrays.asList(user_answers_array));
         for(int x=0;x<10;x++){
-            if(correct_answers.get(x).equals(user_answers[x]))
+            if(correct_answers.get(x).equals(user_answers.get(x))){
+                correctOrWrong.add("+1");
                 exam_score++;
+            }else{
+                correctOrWrong.add("");
+            }
         }
         
         HttpSession session = request.getSession();
@@ -254,7 +261,6 @@ public class UserController {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date=new Date();
         String dateString = dateFormat.format(date);
-        System.out.println(dateString);
         ExamScores e=new ExamScores();
         e.setExam(exam);
         e.setDateTaken(dateFormat.parse(dateString));
@@ -263,8 +269,14 @@ public class UserController {
         e.setUserDetails(user);
         e_service.addExamScore(e);
         
-        System.out.println("Exam Score: "+exam_score);
-        return "../../user/home";
+        map.put("exam",exam);
+        map.put("questions", questions);
+        map.put("correct_answers", correct_answers);
+        map.put("user_answers",user_answers);
+        map.put("correctOrWrong", correctOrWrong);
+        map.put("exam_score",exam_score);
+        
+        return "../../user/exam/exam_results";
     }
 
     @RequestMapping(value="/course_outline", method=RequestMethod.GET)
