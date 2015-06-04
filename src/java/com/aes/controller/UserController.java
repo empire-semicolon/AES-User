@@ -213,10 +213,38 @@ public class UserController {
         
         map.put("exam",exam);
         map.put("questions", questions);
-        map.put("answers", answers);
+        //map.put("answers", answers);
         map.put("choices", choices);
         
         return "../../user/exam/exam";
+    }
+    
+    @RequestMapping(value="/submit_exam", method=RequestMethod.POST)
+    public String setupForm11(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
+            HttpServletRequest request, @RequestParam String examId, @RequestParam String answers) throws ParseException{
+        Exam exam = new Exam();
+        exam.setExamId(Integer.parseInt(examId));
+        exam = service.getExam(exam);
+        
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(exam.getQuestionDetails());
+        JSONObject jsonObject = (JSONObject)obj;
+        List<String> correct_answers=new ArrayList<>();
+        
+        for(int x=0;x<10;x++){
+            JSONObject question=(JSONObject)jsonObject.get(""+x);
+            correct_answers.add((String)question.get("Answer"));
+        }
+        
+        int exam_score=0;
+        String user_answers[]=answers.split(",");
+        for(int x=0;x<10;x++){
+            if(correct_answers.get(x).equals(user_answers[x]))
+                exam_score++;
+        }
+        
+        System.out.println("Exam Score: "+exam_score);
+        return "../../user/home";
     }
 
     @RequestMapping(value="/course_outline", method=RequestMethod.GET)
