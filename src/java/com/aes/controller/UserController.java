@@ -184,7 +184,7 @@ public class UserController {
         return "../../user/exam/upcoming_exams";
     }
     
-    @RequestMapping(value="/takeExam", method=RequestMethod.GET)
+    @RequestMapping(value="/take_exam", method=RequestMethod.GET)
     public String setupForm10(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
 	HttpServletRequest request, @RequestParam String examId) throws ParseException{
         Exam exam = new Exam();
@@ -198,7 +198,7 @@ public class UserController {
         List<String> answers=new ArrayList<>();
         List<ArrayList> choices=new ArrayList<>();
         
-        for(int x=0;x<10;x++){
+        for(int x=0;x<2;x++){
             JSONObject question=(JSONObject)jsonObject.get(""+x);
             questions.add((String)question.get("Question"));
             answers.add((String)question.get("Answer"));
@@ -232,19 +232,20 @@ public class UserController {
         JSONObject jsonObject = (JSONObject)obj;
         List<String> correct_answers=new ArrayList<>();
         
-        for(int x=0;x<10;x++){
+        for(int x=0;x<2;x++){
             JSONObject question=(JSONObject)jsonObject.get(""+x);
             correct_answers.add((String)question.get("Answer"));
         }
         
         int exam_score=0;
         String user_answers[]=answers.split(",");
-        for(int x=0;x<10;x++){
+        for(int x=0;x<2;x++){
             if(correct_answers.get(x).equals(user_answers[x]))
                 exam_score++;
         }
-
-        System.out.println("Exam Score: "+exam_score);
+				
+        System.out.println("Exam Score: "+exam_score);		
+				
         return "../../user/home";
     }
 
