@@ -243,7 +243,19 @@ public class UserController {
             if(correct_answers.get(x).equals(user_answers[x]))
                 exam_score++;
         }
-
+        /**
+        HttpSession session = request.getSession();
+        UserDetails user = new UserDetails();
+        user.setUserId((int)session.getAttribute("userID"));
+        ExamScores e=new ExamScores();
+        e.setExamScoresId(2);
+        e.setExam(exam);
+        e.setDateTaken(new Date());
+        e.setScore(exam_score);
+        e.setMaxScore(10);
+        e.setUserDetails(user);
+        e_service.addExamScore(e);
+        */
         System.out.println("Exam Score: "+exam_score);
         return "../../user/home";
     }

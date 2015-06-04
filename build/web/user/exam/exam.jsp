@@ -11,7 +11,7 @@
 	<div class="col-md-10">
 		<div class="panel panel-default">
 			<div class="panel-body">
-                            <form action="submit_exam.htm" method="POST">
+                            <form name="theForm" action="submit_exam.htm" method="POST">
 				<% int x = 0; %>
                                 <c:set var="count" value="0" scope="page" />
 				<c:forEach items="${questions}" var="question">
@@ -43,8 +43,9 @@
 				<hr/>
                                 <c:set var="count" value="${count+1}" scope="page"/>
 				</c:forEach>
+                                <input type="hidden" id="timeLimit" value="${exam.getTimeLimit()}">
                                 <input type="hidden" name="examId" value="${exam.getExamId()}"/>
-                                <input type="hidden" id="answers" name="answers" value=""/>
+                                <input type="hidden" id="answers" name="answers" value=" , , , , , , , , , "/>
                                 <button class="submit" type="submit">Submit</button>
                             </form>
 			</div>
@@ -69,6 +70,7 @@
 			<div class="panel-body">
 				<h6>${exam.getTimeLimit()} mins</h6>
 			</div>
+                        <span id="countdown" class="timer"></span>
 		</div>
 	</div>
 	<div class="col-md-2">
@@ -120,4 +122,35 @@
         elem2.value=answers;
     }
     
+</script>
+
+<script>
+    var seconds = (document.getElementById("timeLimit").value)*60;
+    function secondPassed() {
+        var seconds_left=seconds;
+        var hours=Math.floor(seconds_left/3600);
+        seconds_left-=hours*(3600);
+        var minutes = Math.floor(seconds_left/60);
+        seconds_left-=minutes*(60);
+
+        if(hours<10){
+            hours="0"+hours;
+        }
+        if(minutes<10){
+            minutes="0"+minutes;
+        }
+        if(seconds_left<10){
+            seconds_left="0"+seconds_left;
+        }
+        
+        document.getElementById('countdown').innerHTML = hours + ":" + minutes + ":" + seconds_left;
+        if (seconds == 0) {
+            clearInterval(countdownTimer);
+            document.theForm.submit();
+        } else {
+            seconds--;
+        }
+    }
+
+    var countdownTimer = setInterval('secondPassed()', 1000);
 </script>
