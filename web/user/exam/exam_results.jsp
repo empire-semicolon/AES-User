@@ -1,3 +1,4 @@
+<%@page import="org.json.simple.parser.JSONParser"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -18,48 +19,11 @@
 						<!-- _____________________________________________________________________________________________ -->
 							<div class="row">
 								<div class="col-lg-12">
-									<h2 class="page-header">Ongoing Exams</h2>
+									<h2 class="page-header">Results - ${exam.getExamTitle()}</h2>
 								</div>
 								<!-- /.col-lg-12 -->
 							</div>
 							<!-- /.row -->
-							<div class="row">
-								<div class="col-md-12">
-									<div class="panel panel-default">
-										<div class="panel-body">
-											<div class="table-responsive">
-												<table id="pastExams" class="table table-striped">
-													<thead>
-														<tr>
-															<th>Title</th>
-															<th>Course</th>
-															<th>Due</th>
-															<th>Time Limit</th>
-															<th>Score</th>
-															<th></th>
-														</tr>
-													</thead>
-													<tbody>
-														<c:forEach items="${ongoingExams}" var="exam">
-															<tr>
-																<td>${exam.getExamTitle()}</td>
-																<td>${exam.course.getCourseTitle()}</td>
-																<td>${exam.getExamDue()}</td>
-																<td>${exam.getTimeLimit()}</td>
-																<td></td>
-																<td>
-																	<a href="take_exam.htm?examId=${exam.getExamId()}" class="btn btn-primary">Take Exam</a>
-																</td>
-															</tr>
-														</c:forEach>
-													</tbody>
-												</table>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-
 						<!-- _____________________________________________________________________________________________ -->
 					</div>
 					<!-- end of AJAX container -->
