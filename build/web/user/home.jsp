@@ -7,44 +7,44 @@
 
 <!DOCTYPE html>
 <html lang="en">
-	<%@include file="includes/header.jsp" %>
-  <%@include file="include.jsp" %>
-		<div id="wrapper">
-			<!-- Navigation -->
-			<jsp:include page="includes/navbar.jsp" />
-			<!-- Page Content -->
-			<div id="page-wrapper" style="min-height: 99px;">
-				<div class="container-fluid">
-					<!-- start of AJAX container -->
-					<div id="content">
-						<!-- _____________________________________________________________________________________________ -->
-							<div class="row">
-								<div class="col-lg-12">
-									<h2 class="page-header">Home</h2>
-									<div class="well">
-                                                                            <%
-                                                                                List<Course> courses=(List<Course>)session.getAttribute("courses");
-                                                                                if(courses.size()==0){ 
-                                                                            %>
-                                                                            <h5>No assigned courses yet. Please contact your development head to start learning.</h5>
-                                                                            <% } else{%>
-                                                                            <h5>Click on "My Courses" to start learning.</h5>
-                                                                            <% } %>
-                                                                            <p></p>
-									</div>
-								</div>
-								<!-- /.col-lg-12 -->
-							</div>
-							<!-- /.row -->
-						<!-- _____________________________________________________________________________________________ -->
+<%@include file="includes/header.jsp" %>
+<%@include file="include.jsp" %>
+<div id="wrapper">
+	<!-- Navigation -->
+	<jsp:include page="includes/navbar.jsp" />
+	<!-- Page Content -->
+	<div id="page-wrapper" style="min-height: 99px;">
+		<div class="container-fluid">
+			<!-- start of AJAX container -->
+			<div id="content">
+				<!-- _____________________________________________________________________________________________ -->
+				<div class="row">
+					<div class="col-lg-12">
+						<h2 class="page-header">Home</h2>
+						<div class="well">
+							<%
+							List<Course> courses=(List<Course>)session.getAttribute("courses");
+							if(courses.size()==0){ 
+							%>
+							<h5>No assigned courses yet. Please contact your development head to start learning.</h5>
+							<% } else{%>
+							<h5>Click on "My Courses" to start learning.</h5>
+							<% } %>
+							<p></p>
+						</div>
 					</div>
-					<!-- end of AJAX container -->
+					<!-- /.col-lg-12 -->
 				</div>
-				<!-- /.container-fluid -->
+				<!-- /.row -->
+				<!-- _____________________________________________________________________________________________ -->
 			</div>
-			<!-- /#page-wrapper -->
+			<!-- end of AJAX container -->
 		</div>
-		<!-- /#wrapper -->
-		<%@include file="includes/footer.jsp" %>
-	</body>
+		<!-- /.container-fluid -->
+	</div>
+	<!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+<%@include file="includes/footer.jsp" %>
+</body>
 </html>

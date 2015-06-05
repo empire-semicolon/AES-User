@@ -50,7 +50,7 @@
                                                     <td>${temp.getExamDue()}</td>
                                                     <td>${temp.getTimeLimit()}</td>
                                                     <td>
-                                                        <a href="takeExam.htm?examId=${temp.getExamId()}" class="btn btn-primary">Take Exam</a>
+                                                        <a href="take_exam.htm?examId=${temp.getExamId()}" class="btn btn-primary">Take Exam</a>
                                                     </td>
                                                 </tr>
                                                 </c:forEach>
