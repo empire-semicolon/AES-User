@@ -1,0 +1,11 @@
+{"0":{"Answer":"42","Choices":["Love","Passion","Money"],"Question":"What is the answer to life?"},
+"1":{"Answer":"Universal Serial Bus","Choices":["USB","USB 3.0","USB-C"],"Question":"USB stands for"},
+"2":{"Answer":"qwerty","Choices":["asdf","zxc","vbnm"],"Question":"Qwerty?"},
+"3":{"Answer":"1","Choices":["2","3","4"],"Question":"123?"},
+"4":{"Answer":"no","Choices":["yes","maybe","somewhat"],"Question":"Is this a test?"},
+"5":{"Answer":"Alliance","Choices":["Navi","Empire","Semicolon"],"Question":"Alliance or Na'vi?"},
+"6":{"Answer":"bubblegum","Choices":["sand","magic","life"],"Question":"What is love?"},
+"7":{"Answer":"4","Choices":["5","3","13"],"Question":"1 + 3 ="},
+"8":{"Answer":"I would if I could","Choices":["I can't, so I won't","What would you do?","I don't know"],"Question":"If given the chance, would you?"},
+"9":{"Answer":"life","Choices":["love","coffee","everything"],"Question":"Java is _____"}
+}
