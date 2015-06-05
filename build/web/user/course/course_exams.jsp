@@ -115,7 +115,7 @@
                                                     <th>Due</th>
                                                     <th>Time Limit</th>
                                                     <th>Score</th>
-                                                    <th></th>
+                                                    <!-- <th></th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -127,9 +127,9 @@
                                                     <td>${temp.getExamDue()}</td>
                                                     <td>${temp.getTimeLimit()}</td>
                                                     <td>${scores.get(count)}/10</td>
-                                                    <td>
+                                                    <!-- <td>
                                                         <button type="button" class="btn btn-primary">View Exam</button>
-                                                    </td>
+                                                    </td> -->
                                                 </tr>
                                                 <c:set var="count" value="${count+1}" scope="page"/>
                                                 </c:forEach>

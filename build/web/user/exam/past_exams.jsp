@@ -36,7 +36,7 @@
 												<th>Due</th>
 												<th>Time Limit</th>
 												<th>Score</th>
-												<th></th>
+												<!-- <th></th> -->
 											</tr>
 										</thead>
 										<tbody>
@@ -48,9 +48,9 @@
 												<td>${exam.getExamDue()}</td>
 												<td>${exam.getTimeLimit()}</td>
 												<td>${scores.get(count)}/10</td>
-												<td>
+												<!-- <td>
 													<a href="past_exams.htm?examId=${exam.getExamId()}" class="btn btn-primary">View Exam</a>
-												</td>
+												</td> -->
 											</tr>
 											<c:set var="count" value="${count+1}" scope="page"/>
 										</c:forEach>

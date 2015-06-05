@@ -201,7 +201,7 @@ public class UserController {
         List<String> questions=new ArrayList<>();
         List<ArrayList> choices=new ArrayList<>();
         
-        for(int x=0;x<2;x++){
+        for(int x=0;x<10;x++){
             JSONObject question=(JSONObject)jsonObject.get(""+x);
             questions.add((String)question.get("Question"));
             ArrayList<String> listdata = new ArrayList<String>();
@@ -236,7 +236,7 @@ public class UserController {
         List<String> questions=new ArrayList<>();
         List<String> correctOrWrong=new ArrayList<>();
         
-        for(int x=0;x<2;x++){
+        for(int x=0;x<10;x++){
             JSONObject question=(JSONObject)jsonObject.get(""+x);
             questions.add((String)question.get("Question"));
             correct_answers.add((String)question.get("Answer"));
@@ -246,7 +246,7 @@ public class UserController {
         String user_answers_array[]=answers.split(",");
         List<String> user_answers=new ArrayList<>();
         user_answers.addAll(Arrays.asList(user_answers_array));
-        for(int x=0;x<2;x++){
+        for(int x=0;x<10;x++){
             if(correct_answers.get(x).equals(user_answers.get(x))){
                 correctOrWrong.add("+1");
                 exam_score++;
