@@ -39,6 +39,8 @@
                                     </div>
                                     <div class="panel-body">
                                         ${tempChapter.getDescription()} <br><br>
+
+                                        <h4>getPresentations</h4>
                                         <div class="list-group">
                                             <c:forEach items="${tempChapter.getPresentations()}" var="tempPresentation">
                                                 <a href="download.htm?file=${tempPresentation.getFilePath()}&name=${tempPresentation.getFileName()}" class="list-group-item"><span class="glyphicon glyphicon-paperclip"></span> ${tempPresentation.getFileName()}
