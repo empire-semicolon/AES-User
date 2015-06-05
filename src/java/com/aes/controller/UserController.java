@@ -51,12 +51,6 @@ public class UserController {
     
     @RequestMapping(value="/home")
     public String setupForm(Map<String, Object> map, HttpServletRequest request){
-        HttpSession session=request.getSession();
-        int userID=(int)session.getAttribute("userID");
-        UserDetails usr = new UserDetails();
-        usr.setUserId(userID);
-        UserDetails user=service.getUserDetails(usr);
-        map.put("userName",user.getUserName());
         return "../../user/home";
     }
     
@@ -70,7 +64,6 @@ public class UserController {
         map.put("firstName",user.getFirstName());
         map.put("middleName",user.getMiddleName());
         map.put("lastName",user.getLastName());
-        map.put("userName",user.getUserName());
         map.put("userBU", e_service.getUnitNameById(user.getBusinessUnit().getBusinessUnitId()));
         map.put("position",user.getPosition());
         map.put("email",user.getEmail());
@@ -85,17 +78,14 @@ public class UserController {
         UserDetails usr = new UserDetails();
         usr.setUserId(userID);
         UserDetails user=service.getUserDetails(usr);
-        //map.put("tempUser",user);
         map.put("firstName",user.getFirstName());
         map.put("middleName",user.getMiddleName());
         map.put("lastName",user.getLastName());
-        map.put("userName",user.getUserName());
         map.put("businessUnit", e_service.getAllBusinessUnit());
         map.put("userBU", e_service.getUnitNameById(user.getBusinessUnit().getBusinessUnitId()));
         map.put("businessUnits", e_service.getAllBusinessUnit());
         map.put("position",user.getPosition());
         map.put("email",user.getEmail());
-        //map.put("userType",service.getTypeNameById(user.getUserType().getUserTypeId()));
         return "../../user/profile/edit_profile";
     }
     
@@ -107,7 +97,6 @@ public class UserController {
         UserDetails usr = new UserDetails();
         usr.setUserId(userID);
         UserDetails user=service.getUserDetails(usr);
-        map.put("userName",user.getUserName());
         map.put("old_pw", user.getPassword());
         return "../../user/profile/change_password";
     }
@@ -141,12 +130,10 @@ public class UserController {
                     user.setPassword(new_pw);
                     service.updateProfile(user);
                 }else{
-                    map.put("userName",user.getUserName());
                     return "../../user/profile/change_password";
                 }
                 break;
         }
-        map.put("userName",user.getUserName());
         return "../../user/home";
     }
     
@@ -191,94 +178,109 @@ public class UserController {
     @RequestMapping(value="/take_exam", method=RequestMethod.GET)
     public String setupForm10(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
 	HttpServletRequest request, @RequestParam String examId) throws ParseException{
+        
+        HttpSession session=request.getSession();
+        int userID=(int)session.getAttribute("userID");
+        UserDetails user = new UserDetails();
+        user.setUserId(userID);
+        
         Exam exam = new Exam();
         exam.setExamId(Integer.parseInt(examId));
-        exam = service.getExam(exam);
+        exam=service.getExam(exam);
+        
+        if(service.isExamAvailable(user, exam)){
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(exam.getQuestionDetails());
+            JSONObject jsonObject = (JSONObject)obj;
+            List<String> questions=new ArrayList<>();
+            List<ArrayList> choices=new ArrayList<>();
 
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(exam.getQuestionDetails());
-        JSONObject jsonObject = (JSONObject)obj;
-        List<String> questions=new ArrayList<>();
-        List<ArrayList> choices=new ArrayList<>();
-        
-        for(int x=0;x<10;x++){
-            JSONObject question=(JSONObject)jsonObject.get(""+x);
-            questions.add((String)question.get("Question"));
-            ArrayList<String> listdata = new ArrayList<String>();
-            JSONArray question_choices=(JSONArray)question.get("Choices");
-            Iterator<String> iterator = question_choices.iterator();
-            listdata.add((String)question.get("Answer"));
-            while(iterator.hasNext()){
-                listdata.add(iterator.next());
+            for(int x=0;x<10;x++){
+                JSONObject question=(JSONObject)jsonObject.get(""+x);
+                questions.add((String)question.get("Question"));
+                ArrayList<String> listdata = new ArrayList<String>();
+                JSONArray question_choices=(JSONArray)question.get("Choices");
+                Iterator<String> iterator = question_choices.iterator();
+                listdata.add((String)question.get("Answer"));
+                while(iterator.hasNext()){
+                    listdata.add(iterator.next());
+                }
+                Collections.shuffle(listdata);
+                choices.add(listdata);
             }
-            Collections.shuffle(listdata);
-            choices.add(listdata);
+
+            map.put("exam",exam);
+            map.put("questions", questions);
+            map.put("choices", choices);
+
+            return "../../user/exam/exam";
+        }else{
+            return "../../user/home";
         }
-        
-        map.put("exam",exam);
-        map.put("questions", questions);
-        map.put("choices", choices);
-        
-        return "../../user/exam/exam";
     }
     
     @RequestMapping(value="/submit_exam", method=RequestMethod.POST)
     public String setupForm11(@ModelAttribute UserDetails loggedUser, Map<String, Object> map,
             HttpServletRequest request, @RequestParam String examId, @RequestParam String answers) throws ParseException, java.text.ParseException{
+        
+        HttpSession session=request.getSession();
+        int userID=(int)session.getAttribute("userID");
+        UserDetails user = new UserDetails();
+        user.setUserId(userID);
+        
         Exam exam = new Exam();
         exam.setExamId(Integer.parseInt(examId));
         exam = service.getExam(exam);
         
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(exam.getQuestionDetails());
-        JSONObject jsonObject = (JSONObject)obj;
-        List<String> correct_answers=new ArrayList<>();
-        List<String> questions=new ArrayList<>();
-        List<String> correctOrWrong=new ArrayList<>();
-        
-        for(int x=0;x<10;x++){
-            JSONObject question=(JSONObject)jsonObject.get(""+x);
-            questions.add((String)question.get("Question"));
-            correct_answers.add((String)question.get("Answer"));
-        }
-        
-        int exam_score=0;
-        String user_answers_array[]=answers.split(",");
-        List<String> user_answers=new ArrayList<>();
-        user_answers.addAll(Arrays.asList(user_answers_array));
-        for(int x=0;x<10;x++){
-            if(correct_answers.get(x).equals(user_answers.get(x))){
-                correctOrWrong.add("+1");
-                exam_score++;
-            }else{
-                correctOrWrong.add("");
+        if(!service.isExamAlreadySubmitted(user, exam)){
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(exam.getQuestionDetails());
+            JSONObject jsonObject = (JSONObject)obj;
+            List<String> correct_answers=new ArrayList<>();
+            List<String> questions=new ArrayList<>();
+            List<String> correctOrWrong=new ArrayList<>();
+
+            for(int x=0;x<10;x++){
+                JSONObject question=(JSONObject)jsonObject.get(""+x);
+                questions.add((String)question.get("Question"));
+                correct_answers.add((String)question.get("Answer"));
             }
+
+            int exam_score=0;
+            String user_answers_array[]=answers.split(",");
+            List<String> user_answers=new ArrayList<>();
+            user_answers.addAll(Arrays.asList(user_answers_array));
+            for(int x=0;x<10;x++){
+                if(correct_answers.get(x).equals(user_answers.get(x))){
+                    correctOrWrong.add("+1");
+                    exam_score++;
+                }else{
+                    correctOrWrong.add("");
+                }
+            }	
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date=new Date();
+            String dateString = dateFormat.format(date);
+            ExamScores e=new ExamScores();
+            e.setExam(exam);
+            e.setDateTaken(dateFormat.parse(dateString));
+            e.setScore(exam_score);
+            e.setMaxScore(10);
+            e.setUserDetails(user);
+            e_service.addExamScore(e);
+
+            map.put("exam",exam);
+            map.put("questions", questions);
+            map.put("correct_answers", correct_answers);
+            map.put("user_answers",user_answers);
+            map.put("correctOrWrong", correctOrWrong);
+            map.put("exam_score",exam_score);
+
+            return "../../user/exam/exam_results";
+        }else{
+            return "../../user/home";
         }
-				
-        System.out.println("Exam Score: "+exam_score);		
-        
-        HttpSession session = request.getSession();
-        UserDetails user = new UserDetails();
-        user.setUserId((int)session.getAttribute("userID"));
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date=new Date();
-        String dateString = dateFormat.format(date);
-        ExamScores e=new ExamScores();
-        e.setExam(exam);
-        e.setDateTaken(dateFormat.parse(dateString));
-        e.setScore(exam_score);
-        e.setMaxScore(10);
-        e.setUserDetails(user);
-        e_service.addExamScore(e);
-        
-        map.put("exam",exam);
-        map.put("questions", questions);
-        map.put("correct_answers", correct_answers);
-        map.put("user_answers",user_answers);
-        map.put("correctOrWrong", correctOrWrong);
-        map.put("exam_score",exam_score);
-        
-        return "../../user/exam/exam_results";
     }
 
     @RequestMapping(value="/course_outline", method=RequestMethod.GET)

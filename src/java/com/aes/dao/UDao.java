@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.aes.dao;
 
 import com.aes.model.Chapter;
@@ -13,20 +7,11 @@ import com.aes.model.Exam;
 import com.aes.model.ExamScores;
 import com.aes.model.Presentation;
 import com.aes.model.UserDetails;
-import com.aes.util.HibernateUtil;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -254,7 +239,28 @@ public class UDao {
                     return false;
                 }
                 
+                public boolean isExamAvailable(UserDetails user, Exam exam){
+
+                    if(isExamAlreadySubmitted(user, exam)) return false;
+                    
+                    List<Course> courses=getAllCoursesAssigned(user);
+                    for(Course c : courses){
+                        for(Exam e : c.getExams()){
+                            if(e.getExamId()==exam.getExamId())
+                                return true;
+                        }
+                    }
+                    
+                    return false;
+                }
                 
+                public boolean isExamAlreadySubmitted(UserDetails user, Exam exam){
+                    List<ExamScores> exam_scores=session.getCurrentSession().createCriteria(ExamScores.class)
+							.add(Restrictions.eq("userDetails.userId", user.getUserId()))
+                                                        .add(Restrictions.eq("exam.examId", exam.getExamId()))
+                                                        .list();
+                    return !exam_scores.isEmpty();
+                }
                 
 		
     /*public boolean updateProfile(UserDetails user){

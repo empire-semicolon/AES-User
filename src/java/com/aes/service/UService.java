@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.aes.service;
 
 import com.aes.dao.UDao;
@@ -115,6 +109,16 @@ public class UService {
                 @Transactional
 		public boolean isCourseAssigned(UserDetails user, int courseId){
 			return uDao.isCourseAssigned(user, courseId);
+		}
+                
+                @Transactional
+		public boolean isExamAvailable(UserDetails user, Exam exam){
+			return uDao.isExamAvailable(user, exam);
+		}
+                
+                 @Transactional
+		public boolean isExamAlreadySubmitted(UserDetails user, Exam exam){
+			return uDao.isExamAlreadySubmitted(user, exam);
 		}
 
 		
