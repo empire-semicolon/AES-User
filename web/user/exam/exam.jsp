@@ -62,7 +62,7 @@
 										</c:forEach>
 										<input type="hidden" id="timeLimit" value="${exam.getTimeLimit()}">
 										<input type="hidden" name="examId" value="${exam.getExamId()}"/>
-										<input type="hidden" id="answers" name="answers" value=" , , , , , , , , , "/>
+										<input type="hidden" id="answers" name="answers" value="No Answer,No Answer,No Answer,No Answer,No Answer,No Answer,No Answer,No Answer,No Answer,No Answer"/>
 										<button class="submit pull-right" type="submit">Submit</button>
 									</form>
 								</div>
@@ -125,7 +125,7 @@
 		var answers = "";
 		for (var i = 0; i <= 9; i++) {
 			var radios2 = document.getElementsByName("radio" + i);
-			var answer = " ";
+			var answer = "No Answer";
 			for (var j = 0; j < radios2.length; j++) {
 				var radio2 = radios2[j];
 				if (radio2.checked) {
