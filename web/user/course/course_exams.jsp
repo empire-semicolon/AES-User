@@ -114,20 +114,24 @@
                                                     <th>Course</th>
                                                     <th>Due</th>
                                                     <th>Time Limit</th>
-                                                    <th></th>
+                                                    <th>Score</th>
+                                                    <!-- <th></th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <c:set var="count" value="0" scope="page" />
                                                 <c:forEach items="${pastExam}" var="temp">
                                                 <tr>
                                                     <td>${temp.getExamTitle()}</td>
                                                     <td>${temp.getCourse().getCourseTitle()}</td>
                                                     <td>${temp.getExamDue()}</td>
                                                     <td>${temp.getTimeLimit()}</td>
-                                                    <td>
+                                                    <td>${scores.get(count)}/10</td>
+                                                    <!-- <td>
                                                         <button type="button" class="btn btn-primary">View Exam</button>
-                                                    </td>
+                                                    </td> -->
                                                 </tr>
+                                                <c:set var="count" value="${count+1}" scope="page"/>
                                                 </c:forEach>
                                             </tbody>
                                         </table>

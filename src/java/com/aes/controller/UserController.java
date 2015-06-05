@@ -317,6 +317,7 @@ public class UserController {
             map.put("pastExam", service.getPastExamsByCourse(user, Integer.parseInt(courseId)));
             map.put("upcomingExam", service.getUpcomingExamsByCourse(user, Integer.parseInt(courseId)));
             map.put("course", e_service.getCourseById(Integer.parseInt(courseId)));
+            map.put("scores",service.getPastExamsExamScores(user));
             return "../../user/course/course_exams";
         }else{
             return "../../user/home";
